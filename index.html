@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+
+<link rel="manifest" href="manifest.json" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="SerraCalc" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<meta name="theme-color" content="#f953c6" />
+
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Serra'ya Özel Hesap Makinesi</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #1f1c2c, #928dab);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    @keyframes moveText {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(20px); }
+      100% { transform: translateX(0); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    h1 {
+      font-size: 3em;
+      font-weight: bold;
+      background: linear-gradient(to right, #f953c6, #b91d73);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 5px rgba(255, 255, 255, 0.2);
+      animation: moveText 2s infinite ease-in-out;
+      z-index: 1;
+    }
+
+    .note {
+      font-size: 1.2em;
+      color: #fff;
+      margin-bottom: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px 20px;
+      border-radius: 15px;
+      z-index: 1;
+    }
+
+    .heart {
+      font-size: 2em;
+      animation: pulse 1s infinite;
+      margin: 10px 0;
+      z-index: 1;
+    }
+
+    .calculator {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      z-index: 1;
+    }
+
+    #display {
+      width: 100%;
+      height: 60px;
+      font-size: 2em;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      text-align: right;
+      background: #ffffffcc;
+      color: #333;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 70px);
+      gap: 10px;
+    }
+
+    button {
+      height: 70px;
+      font-size: 1.4em;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(to bottom right, #ff758c, #ff7eb3);
+      color: white;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    button.operator {
+      background: linear-gradient(to bottom right, #43cea2, #185a9d);
+    }
+
+    button.equal {
+      background: linear-gradient(to bottom right, #f7971e, #ffd200);
+      color: #333;
+    }
+
+    button.clear {
+      background: linear-gradient(to bottom right, #ff416c, #ff4b2b);
+    }
+
+    .love-buttons {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      z-index: 1;
+    }
+
+    .love-buttons button {
+      height: auto;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 1em;
+    }
+
+    #heartCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    @media (max-width: 400px) {
+      .buttons {
+        grid-template-columns: repeat(4, 60px);
+        gap: 8px;
+      }
+
+      button {
+        height: 60px;
+        font-size: 1.2em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="heartCanvas"></canvas>
+
+  <h1>Serra'ya Özel 💎</h1>
+  <div class="note">Gülüşün bile işlemleri unutturuyor... 😍</div>
+  <div class="heart">❤️</div>
+
+  <div class="calculator">
+    <input type="text" id="display" disabled />
+    <div class="buttons">
+      <button onclick="clearDisplay()" class="clear">C</button>
+      <button onclick="append('%')" class="operator">%</button>
+      <button onclick="append('/')" class="operator">÷</button>
+      <button onclick="append('*')" class="operator">×</button>
+
+      <button onclick="append('7')">7</button>
+      <button onclick="append('8')">8</button>
+      <button onclick="append('9')">9</button>
+      <button onclick="append('-')" class="operator">−</button>
+
+      <button onclick="append('4')">4</button>
+      <button onclick="append('5')">5</button>
+      <button onclick="append('6')">6</button>
+      <button onclick="append('+')" class="operator">+</button>
+
+      <button onclick="append('1')">1</button>
+      <button onclick="append('2')">2</button>
+      <button onclick="append('3')">3</button>
+      <button onclick="calculate()" class="equal">=</button>
+
+      <button onclick="append('0')">0</button>
+      <button onclick="append('.')">.</button>
+      <button onclick="backspace()">⌫</button>
+    </div>
+  </div>
+
+  <div class="love-buttons">
+    <button onclick="showLove()">💌 Seni Seviyorum</button>
+    <button onclick="playSound()">🔊 Sürpriz Ses</button>
+  </div>
+
+  <audio id="loveSound" src="ses.mp3"></audio>
+
+  <script>
+    const display = document.getElementById("display");
+
+    function append(val) {
+      display.value += val;
+    }
+
+    function clearDisplay() {
+      display.value = '';
+    }
+
+    function backspace() {
+      display.value = display.value.slice(0, -1);
+    }
+
+    function calculate() {
+      try {
+        display.value = eval(display.value.replace('%', '/100'));
+      } catch (e) {
+        display.value = "Hata!";
+      }
+    }
+
+    function showLove() {
+      alert("Serra 💖\nSeni hesaplamak mümkün mü :) 💫");
+    }
+
+    function playSound() {
+      document.getElementById("loveSound").play();
+    }
+
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(() => console.log("Service Worker kayıt edildi"));
+  }
+
+    // Canvas: Düşen Kalpler
+    const canvas = document.getElementById('heartCanvas');
+    const ctx = canvas.getContext('2d');
+    let hearts = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function createHeart() {
+      return {
+        x: Math.random() * canvas.width,
+        y: -20,
+        size: Math.random() * 20 + 10,
+        speed: Math.random() * 1 + 0.5,
+        alpha: Math.random() * 0.5 + 0.5
+      };
+    }
+
+    function drawHeart(x, y, size, alpha) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(size / 15, size / 15);
+      ctx.globalAlpha = alpha;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(0, -3, -5, -15, -15, -15);
+      ctx.bezierCurveTo(-35, -15, -35, 15, 0, 35);
+      ctx.bezierCurveTo(35, 15, 35, -15, 15, -15);
+      ctx.bezierCurveTo(5, -15, 0, -3, 0, 0);
+      ctx.fillStyle = 'rgba(255, 100, 150, 1)';
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function animateHearts() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (hearts.length < 50) {
+        hearts.push(createHeart());
+      }
+      for (let i = 0; i < hearts.length; i++) {
+        const h = hearts[i];
+        drawHeart(h.x, h.y, h.size, h.alpha);
+        h.y += h.speed;
+        if (h.y > canvas.height + 50) {
+          hearts.splice(i, 1);
+          i--;
+        }
+      }
+      requestAnimationFrame(animateHearts);
+    }
+
+    animateHearts();
+  </script>
+</body>
+</html>
