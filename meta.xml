@@ -1,0 +1,7 @@
+<meta>
+    <info author="MTA Gallery System" version="1.0" name="gallery" description="Vehicle Gallery Management System" />
+    
+    <script src="server.lua" type="server" />
+    
+    <export function="*" type="server" />
+</meta>
