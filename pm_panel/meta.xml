@@ -1,0 +1,12 @@
+<meta>
+    <info author="cursor-ai" name="pm_panel" version="1.0.0" type="script" description="Panel-based private messaging with SQLite" />
+
+    <!-- Shared config accessible by server and client -->
+    <script src="shared/config.lua" type="shared" />
+
+    <!-- Server-side logic -->
+    <script src="server/main.lua" type="server" />
+
+    <!-- Client-side UI and handlers -->
+    <script src="client/main.lua" type="client" />
+</meta>
