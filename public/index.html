@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Özel Sohbet</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <div class="chat-container">
+      <div class="left-pane">
+        <div class="chat-header">
+          <div id="chatWith">Sohbet</div>
+          <div class="presence" id="peerPresence"></div>
+        </div>
+        <div class="messages" id="messages"></div>
+        <div class="composer">
+          <input id="messageInput" placeholder="Mesaj yaz..." />
+          <button id="sendBtn">Gönder</button>
+        </div>
+      </div>
+
+      <div class="right-pane">
+        <div class="panel-header">Özel Sohbet Sistemi</div>
+        <div class="search">
+          <input id="searchInput" placeholder="Oyuncu ara" />
+          <select id="statusFilter">
+            <option value="all">Tümü</option>
+            <option value="online">Online</option>
+            <option value="dnd">Rahatsız Etmeyin</option>
+            <option value="offline">Offline</option>
+          </select>
+        </div>
+        <div class="me">
+          <input id="nameInput" placeholder="Adınız" />
+          <button id="saveName">Kaydet</button>
+          <select id="myStatus">
+            <option value="online">Online</option>
+            <option value="dnd">Rahatsız Etmeyin</option>
+          </select>
+        </div>
+        <div class="players" id="players"></div>
+        <div class="actions">
+          <button id="beginChat" disabled>Başlat</button>
+          <button id="blockBtn" disabled>Engelle</button>
+          <button id="pokeBtn" disabled>Dürt</button>
+          <label class="dnd"><input type="checkbox" id="doNotDisturb" /> Rahatsız Etme</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-Iyi5DExcdbn86W9R3ciWvoCrEi4/1JtI+7V28rZ2J6S9yP0b8V9pPhs13V7nZ7pM" crossorigin="anonymous"></script>
+  <script src="main.js"></script>
+</body>
+</html>
